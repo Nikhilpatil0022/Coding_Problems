@@ -1,31 +1,32 @@
-#include<bits/stdc++.h>
-#define ll long long
-#define vll vector<long long>
-#define vl_l vector<vector<long long> >
-#define pll pair<ll,ll>
-#define pb push_back
-#define T ll t;cin>>t;
-#define maxx 1000000007
-#define inputarr ll n;cin>>n;vll a(n);for(ll i=0;i<n;i++){cin>>a[i];}
+#include <vector>
+#include <iostream>
+#include <string>
+
 using namespace std;
-int main()
-{
-    string s;
-    cin>>s;
-    ll len=s.length();
-    ll ans=0;
-    for(ll i=len-1;i>=0;i--)
-    {
-        ll dec=0,temp=0;
-        for(ll j=i;j>=0;j--)
-        {
-              temp=temp+((ll)(s[j]-'0'))*pow(10,dec);
-             // cout<<temp<<" ";
-              dec++;
-              ans=ans+temp;
-        }
-           //ans=ans+temp;
-    }
-    cout<<ans%maxx;
-    return 0;
+
+const int MOD = 1000000007;
+
+long substrings (string s) {
+   int n = s.size ();
+   vector<long> a (n), b (n); // a = weight, b = weight sum
+   a[0] = 1, b[0] = 1;
+
+   for (int i=1; i<n; i++) {
+      a[i] = (10 * a[i-1]) % MOD;
+      b[i] = (b[i-1] + a[i]) % MOD;
+   }
+
+   long ans = 0;
+   for (int i = 0; i < n; i++) {
+      ans += ((s[i]-'0') * b[n-i-1] * (i+1)) % MOD;
+      ans %= MOD;
+   }
+
+   return ans;
+}
+
+int main () {
+   string n;
+   cin >> n;
+   cout << substrings (n) << endl;
 }
